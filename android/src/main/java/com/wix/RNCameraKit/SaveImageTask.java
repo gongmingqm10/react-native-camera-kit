@@ -37,17 +37,19 @@ public class SaveImageTask extends AsyncTask<byte[], Void, Void> {
 
     private final Context context;
     private final Promise promise;
+    private final int quality;
     private boolean saveToCameraRoll;
     private String bitmapUrl = null;
 
-    public SaveImageTask(Context context, Promise promise, boolean saveToCameraRoll) {
+    public SaveImageTask(Context context, Promise promise, boolean saveToCameraRoll, int quality) {
         this.context = context;
         this.promise = promise;
         this.saveToCameraRoll = saveToCameraRoll;
+        this.quality = quality;
     }
 
-    public SaveImageTask(String bitmapUrl, Context context, Promise promise, boolean saveToCameraRoll) {
-        this(context, promise, saveToCameraRoll);
+    public SaveImageTask(String bitmapUrl, Context context, Promise promise, boolean saveToCameraRoll, int quality) {
+        this(context, promise, saveToCameraRoll, quality);
         this.bitmapUrl = bitmapUrl;
         if (this.bitmapUrl != null) {
             this.bitmapUrl = this.bitmapUrl.replace("file://","");
@@ -249,7 +251,7 @@ public class SaveImageTask extends AsyncTask<byte[], Void, Void> {
                 imageFile.delete();
             }
             outputStream = new FileOutputStream(imageFile);
-            image.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            image.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
             outputStream.close();
         } catch (IOException e) {
             Log.d(TAG, "Error accessing file: " + e.getMessage());

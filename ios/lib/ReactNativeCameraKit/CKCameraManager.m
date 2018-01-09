@@ -56,11 +56,11 @@ RCT_EXPORT_METHOD(requestDeviceCameraAuthorization:(RCTPromiseResolveBlock)resol
 }
 
 
-RCT_EXPORT_METHOD(capture:(BOOL)shouldSaveToCameraRoll
+RCT_EXPORT_METHOD(capture:(BOOL)shouldSaveToCameraRoll quality:(NSInteger *)quality
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
     
-    [self.camera snapStillImage:shouldSaveToCameraRoll success:^(NSDictionary *imageObject) {
+    [self.camera snapStillImage:shouldSaveToCameraRoll quality:quality success:^(NSDictionary *imageObject) {
         if (imageObject) {
             if (resolve) {
                 resolve(imageObject);

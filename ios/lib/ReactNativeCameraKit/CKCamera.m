@@ -483,7 +483,7 @@ RCT_ENUM_CONVERTER(CKCameraZoomMode, (@{
 
 
 
-- (void)snapStillImage:(BOOL)shouldSaveToCameraRoll success:(CaptureBlock)block {
+- (void)snapStillImage:(BOOL)shouldSaveToCameraRoll quality:(NSInteger)quality success:(CaptureBlock)block {
     dispatch_async( self.sessionQueue, ^{
         AVCaptureConnection *connection = [self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo];
         
@@ -509,7 +509,7 @@ RCT_ENUM_CONVERTER(CKCameraZoomMode, (@{
                 
                 CGImageRef imageRef = CGImageCreateWithImageInRect(capturedImage.CGImage, rectToCrop);
                 capturedImage = [UIImage imageWithCGImage:imageRef scale:capturedImage.scale orientation:UIImageOrientationUp];
-                imageData = UIImageJPEGRepresentation(capturedImage, 0.85f);
+                imageData = UIImageJPEGRepresentation(capturedImage, (CGFloat) (quality / 100.0));
                 
                 [PHPhotoLibrary requestAuthorization:^( PHAuthorizationStatus status ) {
                     if ( status == PHAuthorizationStatusAuthorized ) {

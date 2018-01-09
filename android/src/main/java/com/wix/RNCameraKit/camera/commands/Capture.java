@@ -12,10 +12,16 @@ public class Capture implements Command {
 
     private final Context context;
     private boolean saveToCameraRoll;
+    private final int quality;
 
     public Capture(Context context, boolean saveToCameraRoll) {
+        this(context, saveToCameraRoll, 100);
+    }
+
+    public Capture(Context context, boolean saveToCameraRoll, int quality) {
         this.context = context;
         this.saveToCameraRoll = saveToCameraRoll;
+        this.quality = quality;
     }
 
     @Override
@@ -32,7 +38,7 @@ public class Capture implements Command {
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
                 camera.stopPreview();
-                new SaveImageTask(context, promise, saveToCameraRoll).execute(data);
+                new SaveImageTask(context, promise, saveToCameraRoll, quality).execute(data);
             }
         });
     }
